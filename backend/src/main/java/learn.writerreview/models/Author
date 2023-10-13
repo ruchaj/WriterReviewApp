@@ -1,0 +1,92 @@
+public class Author {
+    private int userId;
+    private String username;
+    private String email;
+    private String password;
+    private int timesWarned;
+    private int numberOfPosts;
+
+    public Author() {
+    }
+
+    public Author(int userId, String username, String email, String password, int timesWarned, int numberOfPosts) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.timesWarned = timesWarned;
+        this.numberOfPosts = numberOfPosts;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getTimesWarned() {
+        return timesWarned;
+    }
+
+    public void setTimesWarned(int timesWarned) {
+        this.timesWarned = timesWarned;
+    }
+
+    public int getNumberOfPosts() {
+        return numberOfPosts;
+    }
+
+    public void setNumberOfPosts(int numberOfPosts) {
+        this.numberOfPosts = numberOfPosts;
+    }
+
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Author author = (Author) object;
+        return userId == author.userId && timesWarned == author.timesWarned && numberOfPosts == author.numberOfPosts && java.util.Objects.equals(username, author.username) && java.util.Objects.equals(email, author.email) && java.util.Objects.equals(password, author.password);
+    }
+
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), userId, username, email, password, timesWarned, numberOfPosts);
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Author{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", timesWarned=" + timesWarned +
+                ", numberOfPosts=" + numberOfPosts +
+                '}';
+    }
+}

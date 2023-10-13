@@ -1,0 +1,84 @@
+package learn.writerreview.models;
+
+import java.sql.Timestamp;
+
+public class Review {
+    private int reviewId;
+    private int postId;
+    private int userId;
+    private String content;
+    private Timestamp reviewDate;
+    private boolean anonymous;
+
+    public int getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Timestamp getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Timestamp reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Review review = (Review) object;
+        return reviewId == review.reviewId && postId == review.postId && userId == review.userId && anonymous == review.anonymous && java.util.Objects.equals(content, review.content) && java.util.Objects.equals(reviewDate, review.reviewDate);
+    }
+
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), reviewId, postId, userId, content, reviewDate, anonymous);
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Review{" +
+                "reviewId=" + reviewId +
+                ", postId=" + postId +
+                ", userId=" + userId +
+                ", content='" + content + '\'' +
+                ", reviewDate=" + reviewDate +
+                ", anonymous=" + anonymous +
+                '}';
+    }
+}
