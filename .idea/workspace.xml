@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c97c3df0-edc4-457c-885e-49380f253004" name="Changes" comment="Creating writerreview">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/learn.writerreview/models/Author" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/learn.writerreview/models/Genre" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/learn.writerreview/models/Post" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/learn.writerreview/models/Review" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/WriterReviewApp.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    <list default="true" id="c97c3df0-edc4-457c-885e-49380f253004" name="Changes" comment="models set up for writerreview">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,11 +57,20 @@
       <option name="project" value="LOCAL" />
       <updated>1697224921156</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="models set up for writerreview">
+      <option name="closed" value="true" />
+      <created>1697227865086</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697227865086</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Creating writerreview" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creating writerreview" />
+    <MESSAGE value="models set up for writerreview" />
+    <option name="LAST_COMMIT_MESSAGE" value="models set up for writerreview" />
   </component>
 </project>
