@@ -1,59 +1,64 @@
-import React, { useState, Redirect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import db from './Firebase';
 import { useNavigate } from 'react-router-dom';
-import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
-import Posts from './Posts';
+import { addDoc, collection, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const AddPostForm = () => {
-  const [post, setPost] = useState({
+import ReactQuill from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css'; 
+const AddPost = ({ post }) => {
+  const [formData, setFormData] = useState({
     anonymous: true,
-    content: '',
     genre_id: '',
     title: '',
     user_id: '',
-    writing_form_id: '',
-    post_date: new Date(), 
+    content: '', 
   });
   const navigate = useNavigate();
-  const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setPost({
-      ...post,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
+
+  useEffect(() => {
+    if (post) {
+      setFormData({ ...post });
+    }
+  }, [post]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-  
+
     try {
-      const postsCollection = collection(db, "posts");
-  
-      await addDoc(postsCollection, {
-        ...post,
-        post_date: serverTimestamp(),
-      });
-      console.log('Post added successfully!');
-      
-      setPost({
+      const postsCollection = collection(db, 'posts');
+
+      if (post) {
+        const postDoc = doc(postsCollection, post.id);
+        await updateDoc(postDoc, {
+          ...formData,
+          post_date: serverTimestamp(),
+        });
+        console.log('Post updated successfully!');
+      } else {
+        await addDoc(postsCollection, {
+          ...formData,
+          post_date: serverTimestamp(),
+        });
+        console.log('Post added successfully!');
+      }
+
+      setFormData({
         anonymous: true,
-        content: '',
         genre_id: '',
         title: '',
         user_id: '',
-        writing_form_id: '',
+        content: '',
       });
-        navigate('/');
+
+      navigate('/');
     } catch (error) {
-      console.error('Error adding post:', error);
+      console.error('Error adding/updating post:', error);
     }
   };
-  
-  
+
   return (
     <div className="container">
-      <h2 className="mt-4">Add a New Post</h2>
+      <h2 className="mt-4">{post ? 'Update Post' : 'Add a New Post'}</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-3">
           <label htmlFor="anonymous" className="form-label">
@@ -62,21 +67,8 @@ const AddPostForm = () => {
               type="checkbox"
               id="anonymous"
               name="anonymous"
-              checked={post.anonymous}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="content" className="form-label">
-            Content:
-            <input
-              type="text"
-              id="content"
-              name="content"
-              className="form-control"
-              value={post.content}
-              onChange={handleInputChange}
+              checked={formData.anonymous}
+              onChange={(e) => setFormData({ ...formData, anonymous: e.target.checked })}
             />
           </label>
         </div>
@@ -88,8 +80,8 @@ const AddPostForm = () => {
               id="genre_id"
               name="genre_id"
               className="form-control"
-              value={post.genre_id}
-              onChange={handleInputChange}
+              value={formData.genre_id}
+              onChange={(e) => setFormData({ ...formData, genre_id: e.target.value })}
             />
           </label>
         </div>
@@ -101,8 +93,8 @@ const AddPostForm = () => {
               id="title"
               name="title"
               className="form-control"
-              value={post.title}
-              onChange={handleInputChange}
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             />
           </label>
         </div>
@@ -114,27 +106,41 @@ const AddPostForm = () => {
               id="user_id"
               name="user_id"
               className="form-control"
-              value={post.user_id}
-              onChange={handleInputChange}
+              value={formData.user_id}
+              onChange={(e) => setFormData({ ...formData, user_id: e.target.value })}
             />
           </label>
         </div>
         <div className="mb-3">
-          <label htmlFor="writing_form_id" className="form-label">
-            Writing Form ID:
-            <input
-              type="text"
-              id="writing_form_id"
-              name="writing_form_id"
-              className="form-control"
-              value={post.writing_form_id}
-              onChange={handleInputChange}
+          <label htmlFor="content" className="form-label">
+            Content:
+            <ReactQuill
+              value={formData.content}
+              onChange={(value) => setFormData({ ...formData, content: value })}
+              modules={{
+                toolbar: [
+                  [{ 'header': '1' }, { 'header': '2' }],
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ 'color': [] }],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  ['link', 'image'],
+                  ['clean'],
+                ],
+              }}
+              formats={[
+                'header',
+                'bold', 'italic', 'underline', 'strike', 'color',
+                'list', 'bullet', 'link', 'image'
+              ]}
             />
           </label>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary">
+          {post ? 'Update' : 'Submit'}
+        </button>
       </form>
     </div>
   );
 };
-export default AddPostForm;
+
+export default AddPost;
