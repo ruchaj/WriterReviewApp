@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import db from './Firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-
+import { useNavigate } from 'react-router-dom';
 const AddAuthor = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -22,6 +22,7 @@ const AddAuthor = () => {
             });
 
             console.log('Author added successfully!');
+            navigate('/Login');
         } catch (error) {
             console.error('Error adding author:', error);
         }

@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import Posts from './Posts';
 import AddReview from './AddReview';
 import AddAuthor from './AddAuthor';
+import Login from './Login';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <NavLink to="/add">Add Post</NavLink>
         <Routes>
           <Route exact path="/" element={<Posts />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/add" element={<AddPosts />} />
           <Route path="/review" element={<AddReview />} />
           <Route path="/signup" element={<AddAuthor />} />
