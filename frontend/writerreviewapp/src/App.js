@@ -9,7 +9,7 @@ import Posts from './Posts';
 import AddReview from './AddReview';
 import AddAuthor from './AddAuthor';
 import Login from './Login';
-
+import Chatbot from './Chatbot';
 
 function App() {
   return (
@@ -17,10 +17,14 @@ function App() {
       <div className="App">
         <h1>Writer Review</h1>
         <h4>Where you can share your excerpts and leave reviews anonymously!</h4>
-        <NavLink to="/add">Add Post</NavLink>
+        <NavLink to="/add" style={{ marginRight: '20px' }}>Add Post</NavLink>
+        <NavLink to="/login" style={{ marginRight: '20px' }}>Login</NavLink>
+        <NavLink to="/chatbot">Get help from our Chatbot!</NavLink>
         <Routes>
-          <Route exact path="/" element={<Posts />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/Chatbot" element={<Chatbot />} />
+          <Route exact path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/posts" element={<Posts />} />
           <Route path="/add" element={<AddPosts />} />
           <Route path="/review/:postId" element={<AddReview />} />
           <Route path="/signup" element={<AddAuthor />} />

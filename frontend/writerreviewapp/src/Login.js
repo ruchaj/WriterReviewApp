@@ -23,7 +23,7 @@ const Login = () => {
       if (querySnapshot.size === 1) {
         const user = querySnapshot.docs[0].data();
         setUser(user);
-        navigate('/');
+        navigate('/posts');
       } else {
         setError('Invalid username or password');
       }

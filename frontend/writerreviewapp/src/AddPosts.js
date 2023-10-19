@@ -52,7 +52,7 @@ const AddPost = ({ post }) => {
             content: '',
           });
     
-          navigate('/');
+          navigate('/posts');
     
       } else {
         await addDoc(postsCollection, {
@@ -70,7 +70,7 @@ const AddPost = ({ post }) => {
         content: '',
       });
 
-      navigate('/');
+      navigate('/posts');
     } catch (error) {
       console.error('Error adding/updating post:', error);
     }
