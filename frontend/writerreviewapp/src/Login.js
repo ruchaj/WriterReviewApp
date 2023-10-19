@@ -1,33 +1,38 @@
-import React, { useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { Link, useNavigate } from "react-router-dom";
-import db from "./Firebase";
+import React, { useState } from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
+import db from './Firebase';
+import { useUserContext } from './UserContext'; 
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { setUser } = useUserContext(); 
+  const [username, setUsername] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [error, setError] = useState(''); 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const authorsCollection = collection(db, "authors");
-    const q = query(authorsCollection, where("username", "==", username), where("password", "==", password));
-    
+    const authorsCollection = collection(db, 'authors');
+    const q = query(authorsCollection, where('username', '==', username), where('password', '==', password));
+
     try {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.size === 1) {
-        navigate("/");
+        const user = querySnapshot.docs[0].data();
+        setUser(user);
+        navigate('/');
       } else {
-        setError("Invalid username or password");
+        setError('Invalid username or password');
       }
     } catch (error) {
-      console.error("Error checking login credentials:", error);
-      setError("An error occurred while checking your credentials");
+      console.error('Error checking login credentials:', error);
+      setError('An error occurred while checking your credentials');
     }
   };
+
 
   return (
     <div className="container">

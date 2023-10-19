@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import db from './Firebase';
 import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 const AddReview = () => {
+    const { postId } = useParams();
+    console.log(postId);
     const [anonymous, setAnonymous] = useState(true);
     const [content, setContent] = useState('');
-    const [review_date, setReviewDate] = useState(new Date('October 17, 2023 12:32:14 GMT-0700'));
-    const [user_id] = useState('bmaNahLNe2wuqxRln60C');
-    const [post_id, setPostId] = useState('');
+    const [review_date, setReviewDate] = useState(new Date().toISOString().slice(0, -8));
+    const { user } = useUserContext(); 
     const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -17,9 +20,9 @@ const AddReview = () => {
             await addDoc(reviewsCollection, {
                 anonymous,
                 content,
-                post_id,
-                review_date,
-                user_id,
+                post_id: postId, 
+                review_date: new Date(review_date),
+                user_id: user ? user.email : '',
             });
 
             console.log('Review added successfully!');
@@ -29,8 +32,7 @@ const AddReview = () => {
 
         setAnonymous(true);
         setContent('');
-        setReviewDate(new Date('October 17, 2023 12:32:14 GMT-0700'));
-        setPostId('');
+        setReviewDate(new Date().toISOString().slice(0, -8));
         navigate('/');
     };
 
@@ -47,18 +49,13 @@ const AddReview = () => {
             </label>
             <br />
             <label>
-                Review Name:
-                <input type="text" value={post_id} onChange={(e) => setPostId(e.target.value)} />
-            </label>
-            <br />
-            <label>
                 Review Date:
-                <input type="datetime-local" value={review_date.toISOString().slice(0, -8)} onChange={(e) => setReviewDate(new Date(e.target.value))} />
+                <input type="datetime-local" value={review_date} onChange={(e) => setReviewDate(e.target.value)} />
             </label>
             <br />
             <label>
                 User ID:
-                <input type="text" value={user_id} disabled />
+                <input type="text" value={user ? user.email : ''} disabled /> 
             </label>
             <br />
             <button type="submit">Submit</button>

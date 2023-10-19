@@ -68,7 +68,7 @@ const Posts = () => {
 
     return (
         <div className="container card-container">
-            {updatePostData && <AddPosts updatePostData={updatePostData} />}
+            {updatePostData && <AddPosts post={updatePostData} />}
             {posts.map((post) => (
                 <div className="card mb-4 custom-card" key={post.id}>
                     <h5 className="genre">Genre: {post.genre_id}</h5>
@@ -79,7 +79,7 @@ const Posts = () => {
                     </div>
                     <div className="card-footer">
                         <h4>Reviews</h4>
-                        {reviews[post.title] && reviews[post.title].map((review, index) => (
+                        {reviews[post.id] && reviews[post.id].map((review, index) => (
                             <div key={index} className="review">
                                 <p className="review-content">{review.content}</p>
                             </div>

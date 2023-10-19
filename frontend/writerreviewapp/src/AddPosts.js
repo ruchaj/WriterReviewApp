@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import db from './Firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { addDoc, collection, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ReactQuill from 'react-quill'; 
-import 'react-quill/dist/quill.snow.css'; 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { useUserContext } from './UserContext'; 
+
 const AddPost = ({ post }) => {
+  const formatPostDate = (timestamp) => {
+    const date = new Date(timestamp.seconds * 1000);
+    return date.toLocaleString();
+  };
+  const location = useLocation();
+  const { user } = useUserContext(); 
+
   const [formData, setFormData] = useState({
     anonymous: true,
     genre_id: '',
     title: '',
-    user_id: '',
-    content: '', 
+    user_id: user ? user.email : '', 
+    content: '',
+    post_date: serverTimestamp(),
   });
   const navigate = useNavigate();
-
   useEffect(() => {
     if (post) {
       setFormData({ ...post });
+      post.post_date = serverTimestamp();
     }
   }, [post]);
 
@@ -31,13 +41,23 @@ const AddPost = ({ post }) => {
         const postDoc = doc(postsCollection, post.id);
         await updateDoc(postDoc, {
           ...formData,
-          post_date: serverTimestamp(),
+          post_date: formatPostDate(serverTimestamp()),
         });
         console.log('Post updated successfully!');
+        setFormData({
+            anonymous: true,
+            genre_id: '',
+            title: '',
+            user_id: '',
+            content: '',
+          });
+    
+          navigate('/');
+    
       } else {
         await addDoc(postsCollection, {
           ...formData,
-          post_date: serverTimestamp(),
+          post_date: formatPostDate(serverTimestamp()),
         });
         console.log('Post added successfully!');
       }
