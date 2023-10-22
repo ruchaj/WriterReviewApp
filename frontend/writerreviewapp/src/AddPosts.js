@@ -5,29 +5,25 @@ import { addDoc, collection, serverTimestamp, updateDoc, doc } from 'firebase/fi
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useUserContext } from './UserContext'; 
+import { useUserContext } from './UserContext';
 
 const AddPost = ({ post }) => {
-  const formatPostDate = (timestamp) => {
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleString();
-  };
   const location = useLocation();
-  const { user } = useUserContext(); 
+  const { user } = useUserContext();
 
   const [formData, setFormData] = useState({
     anonymous: true,
     genre_id: '',
     title: '',
-    user_id: user ? user.email : '', 
+    user_id: user ? user.email : '',
     content: '',
     post_date: serverTimestamp(),
   });
   const navigate = useNavigate();
+
   useEffect(() => {
     if (post) {
       setFormData({ ...post });
-      post.post_date = serverTimestamp();
     }
   }, [post]);
 
@@ -40,24 +36,22 @@ const AddPost = ({ post }) => {
       if (post) {
         const postDoc = doc(postsCollection, post.id);
         await updateDoc(postDoc, {
-          ...formData,
-          post_date: formatPostDate(serverTimestamp()),
+          anonymous: formData.anonymous,
+          genre_id: formData.genre_id,
+          title: formData.title,
+          user_id: formData.user_id,
+          content: formData.content,
+          post_date: serverTimestamp(),
         });
         console.log('Post updated successfully!');
-        setFormData({
-            anonymous: true,
-            genre_id: '',
-            title: '',
-            user_id: '',
-            content: '',
-          });
-    
-          navigate('/posts');
-    
       } else {
         await addDoc(postsCollection, {
-          ...formData,
-          post_date: formatPostDate(serverTimestamp()),
+          anonymous: formData.anonymous,
+          genre_id: formData.genre_id,
+          title: formData.title,
+          user_id: formData.user_id,
+          content: formData.content,
+          post_date: serverTimestamp(),
         });
         console.log('Post added successfully!');
       }
@@ -68,6 +62,7 @@ const AddPost = ({ post }) => {
         title: '',
         user_id: '',
         content: '',
+        post_date: serverTimestamp(),
       });
 
       navigate('/posts');
@@ -142,7 +137,7 @@ const AddPost = ({ post }) => {
                   [{ 'header': '1' }, { 'header': '2' }],
                   ['bold', 'italic', 'underline', 'strike'],
                   [{ 'color': [] }],
-                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                   ['link', 'image'],
                   ['clean'],
                 ],
@@ -150,7 +145,7 @@ const AddPost = ({ post }) => {
               formats={[
                 'header',
                 'bold', 'italic', 'underline', 'strike', 'color',
-                'list', 'bullet', 'link', 'image'
+                'list', 'bullet', 'link', 'image',
               ]}
             />
           </label>

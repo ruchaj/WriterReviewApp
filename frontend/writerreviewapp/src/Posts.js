@@ -7,6 +7,72 @@ import AddPosts from "./AddPosts";
 import PostContent from "./PostContent";
 
 const Posts = () => {
+    const containerStyles = {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        gap: '20px',
+        margin: '0 auto',
+        maxWidth: '800px',
+        padding: '24px',
+      };
+      
+      const cardStyles = {
+        flex: '1 0 calc(32% - 20px)',
+        padding: '20px',
+        border: '1px solid #c9c9c9',
+        borderRadius: '7px',
+        boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.15)',
+        display: 'flex',
+        flexDirection: 'column',
+      };
+      
+      const genreStyles = {
+        margin: '0',
+        color: '#007489',
+      };
+      
+      const cardTitleStyles = {
+        margin: '0',
+        fontSize: '1.2rem',
+        color: '#222',
+      };
+      
+      const postContentStyles = {
+        marginTop: '10px',
+        fontSize: '0.9rem',
+        color: '#757575',
+        display: 'none', 
+      };
+      
+      const readMoreButtonStyles = {
+        backgroundColor: '#007489',
+        color: '#fff',
+        border: 'none',
+        padding: '0.3rem 0.8rem',
+        marginTop: '10px',
+        cursor: 'pointer',
+      };
+      
+      const reviewStyles = {
+        margin: '10px 0',
+        border: '1px solid #c9c9c9',
+        padding: '10px',
+        borderRadius: '5px',
+      };
+      
+      const reviewContentStyles = {
+        fontSize: '0.9rem',
+      };
+      
+      const addReviewLinkStyles = {
+        display: 'block',
+        margin: '10px 0',
+        color: '#007489',
+        textDecoration: 'none',
+      };
+      
+      
     const [posts, setPosts] = useState([]);
     const [reviews, setReviews] = useState({});
     const [updatePostData, setUpdatePostData] = useState(null);
@@ -66,32 +132,51 @@ const Posts = () => {
         }
     };
 
+    const toggleReadMore = (postId) => {
+        setPosts(prevPosts => prevPosts.map(post => {
+            if (post.id === postId) {
+                return { ...post, isReadMore: !post.isReadMore };
+            }
+            return post;
+        }));
+    };
+
     return (
-        <div className="container card-container">
-            {updatePostData && <AddPosts post={updatePostData} />}
-            {posts.map((post) => (
-                <div className="card mb-4 custom-card" key={post.id}>
-                    <h5 className="genre">Genre: {post.genre_id}</h5>
-                    <small className="post-date">{formatPostDate(post.post_date)}</small>
-                    <div className="card-body">
-                        <h5 className="card-title fancy-title">{post.title}</h5>
-                        <PostContent htmlContent={post.content} />
+        <div style={containerStyles} className="container card-container">
+        {updatePostData && <AddPosts post={updatePostData} />}
+        {posts.map((post) => (
+          <div style={cardStyles} className={`card mb-4 custom-card ${post.isReadMore ? 'expanded' : ''}`} key={post.id}>
+            <div className="scroll">
+              <div style={genreStyles}>Genre: {post.genre_id}</div>
+              <small className="post-date">{formatPostDate(post.post_date)}</small>
+              <div className="card-body">
+                <h5 style={cardTitleStyles} className="card-title fancy-title">
+                  {post.title}
+                </h5>
+                <PostContent htmlContent={post.content} maxLength={250} />
+              </div>
+              <div className="card-footer">
+                <h4>Reviews</h4>
+                {reviews[post.id] &&
+                  reviews[post.id].map((review, index) => (
+                    <div style={reviewStyles} key={index} className="review">
+                      <p style={reviewContentStyles} className="review-content">
+                        {review.content}
+                      </p>
                     </div>
-                    <div className="card-footer">
-                        <h4>Reviews</h4>
-                        {reviews[post.id] && reviews[post.id].map((review, index) => (
-                            <div key={index} className="review">
-                                <p className="review-content">{review.content}</p>
-                            </div>
-                        ))}
-                        <button onClick={() => handleUpdatePost(post)}>Update Post</button>
-                        <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
-                    </div>
-                    <NavLink to={`/review/${post.id}`}>Add Review</NavLink>
-                </div>
-            ))}
-        </div>
+                  ))}
+                <button onClick={() => handleUpdatePost(post)}>Update Post</button>
+                <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
+              </div>
+              <NavLink to={`/review/${post.id}`} style={addReviewLinkStyles} className="add-review-link">
+                Add Review
+              </NavLink>
+            </div>
+          </div>
+        ))}
+      </div>
     );
-};
+  };
+
 
 export default Posts;
