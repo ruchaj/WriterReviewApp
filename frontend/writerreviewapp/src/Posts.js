@@ -18,15 +18,14 @@ const Posts = () => {
       };
       
       const cardStyles = {
-        flex: '1 0 calc(32% - 20px)',
+        flex: '1 0 calc(35% - 20px)',
         padding: '20px',
         border: '1px solid #c9c9c9',
         borderRadius: '7px',
         boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.15)',
         display: 'flex',
         flexDirection: 'column',
-      };
-      
+      };      
       const genreStyles = {
         margin: '0',
         color: '#007489',

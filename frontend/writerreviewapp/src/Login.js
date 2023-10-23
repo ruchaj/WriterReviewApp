@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContext';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import db from './Firebase';
 const auth = getAuth();
 
 
 const Login = () => {
-  const { setUser } = useUserContext();
+  const { user,setUser } = useUserContext();
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -51,7 +51,15 @@ const Login = () => {
     }
   };
 
-
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setUser(null); 
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
   return (
     <div className="container">
       <h2>Login</h2>
@@ -89,6 +97,12 @@ const Login = () => {
       <button onClick={handleGoogleLogin} className="btn btn-primary">
         Login with Google
       </button>
+      {user ? (
+        <button onClick={handleSignOut} className="btn btn-danger">
+          Sign Out
+        </button>
+      ) : null}
+
       {error && <p className="text-danger">{error}</p>}
       <p>
         New user? <Link to="/signup">Sign up</Link>

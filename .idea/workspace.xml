@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c97c3df0-edc4-457c-885e-49380f253004" name="Changes" comment="models set up for writerreview">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/writerreviewapp/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
