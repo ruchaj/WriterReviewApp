@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot, query, deleteDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, updateDoc, query, deleteDoc, doc, increment  } from "firebase/firestore";
 import db from "./Firebase";
 import './Posts.css';
 import { useUserContext } from "./UserContext";
@@ -77,6 +77,23 @@ const Posts = () => {
     const [reviews, setReviews] = useState({});
     const [updatePostData, setUpdatePostData] = useState(null);
     const { user } = useUserContext();
+    const handleReportReview = async (review) => {
+      try {
+        await deleteDoc(doc(db, "reviews", review.id));
+        console.log("Review reported and deleted successfully!");
+      } catch (error) {
+        console.error("Error reporting the review:", error);
+      }
+    };
+    const handleReportPost = async (post) => {
+      try {
+        await deleteDoc(doc(db, "posts", post.id));
+        console.log("Post reported and deleted successfully!");
+      } catch (error) {
+        console.error("Error reporting the post:", error);
+      }
+    };
+        
     useEffect(() => {
         const postsCollection = collection(db, "posts");
         const reviewsCollection = collection(db, "reviews");
@@ -91,7 +108,7 @@ const Posts = () => {
             });
             setPosts(newPosts);
         });
-
+      
         const unsubscribeReviews = onSnapshot(reviewsQuery, (snapshot) => {
             const newReviews = {};
 
@@ -167,6 +184,7 @@ const Posts = () => {
                 </h5>
                 <PostContent htmlContent={post.content} maxLength={250} />
               </div>
+              <button onClick={() => handleReportPost(post)}>Report Post</button>
               <div className="card-footer">
                 <h4>Reviews</h4>
                 {reviews[post.id] &&
@@ -175,6 +193,7 @@ const Posts = () => {
                       <p style={reviewContentStyles} className="review-content">
                         {review.content}
                       </p>
+                      <button onClick={() => handleReportReview(review)}>Report Review</button>
                     </div>
                   ))}
                 {user && (user.email === post.user_id || user.uid === post.user_id) && (
