@@ -177,8 +177,12 @@ const Posts = () => {
                       </p>
                     </div>
                   ))}
-                <button onClick={() => handleUpdatePost(post)}>Update Post</button>
-                <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
+                {user && (user.email === post.user_id || user.uid === post.user_id) && (
+                  <>
+                    <button onClick={() => handleUpdatePost(post)}>Update Post</button>
+                    <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>
+                  </>
+                )}
               </div>
               <NavLink to={`/review/${post.id}`} style={addReviewLinkStyles} className="add-review-link">
                 Add Review
