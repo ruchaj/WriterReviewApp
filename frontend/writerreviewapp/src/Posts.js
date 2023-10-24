@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, onSnapshot, updateDoc, query, deleteDoc, doc, increment  } from "firebase/firestore";
+import { collection, where, getDocs, onSnapshot, updateDoc, query, deleteDoc, doc, increment  } from "firebase/firestore";
 import db from "./Firebase";
 import './Posts.css';
 import { useUserContext } from "./UserContext";
@@ -79,10 +79,21 @@ const Posts = () => {
     const { user } = useUserContext();
     const handleReportReview = async (review) => {
       try {
-        await deleteDoc(doc(db, "reviews", review.id));
-        console.log("Review reported and deleted successfully!");
+        const postID = review.post_id;
+    
+        const querySnapshot = await getDocs(query(collection(db, "reviews"), where("post_id", "==", postID)));
+    
+        if (!querySnapshot.empty) {
+          const reviewDoc = querySnapshot.docs[0];
+    
+          await deleteDoc(reviewDoc.ref);
+    
+          console.log("Review reported and deleted successfully!");
+        } else {
+          console.log("No matching review document found.");
+        }
       } catch (error) {
-        console.error("Error reporting the review:", error);
+        console.error("Error reporting or deleting the review:", error);
       }
     };
     const handleReportPost = async (post) => {
