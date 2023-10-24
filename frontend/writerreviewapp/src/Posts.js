@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { collection, onSnapshot, query, deleteDoc, doc } from "firebase/firestore";
 import db from "./Firebase";
 import './Posts.css';
+import { useUserContext } from "./UserContext";
 import { Link, NavLink } from "react-router-dom";
 import AddPosts from "./AddPosts";
 import PostContent from "./PostContent";
@@ -75,7 +76,7 @@ const Posts = () => {
     const [posts, setPosts] = useState([]);
     const [reviews, setReviews] = useState({});
     const [updatePostData, setUpdatePostData] = useState(null);
-
+    const { user } = useUserContext();
     useEffect(() => {
         const postsCollection = collection(db, "posts");
         const reviewsCollection = collection(db, "reviews");
@@ -118,19 +119,31 @@ const Posts = () => {
     };
 
     const handleUpdatePost = (post) => {
+      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id);
+
+      if (isUserAuthorized) {
         setUpdatePostData(post);
+      }
     };
 
     const handleDeletePost = async (postId) => {
-        try {
-            await deleteDoc(doc(db, "posts", postId));
-            setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-            console.log("Post deleted successfully!");
-        } catch (error) {
-            console.error("Error deleting post:", error);
-        }
-    };
+      const post = posts.find((p) => p.id === postId);
 
+      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id);
+    
+      if (isUserAuthorized) {
+        try {
+          await deleteDoc(doc(db, "posts", postId));
+          setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+          console.log("Post deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting post:", error);
+        }
+      } else {
+        console.error("User is not authorized to delete this post.");
+      }
+    };
+    
     const toggleReadMore = (postId) => {
         setPosts(prevPosts => prevPosts.map(post => {
             if (post.id === postId) {
