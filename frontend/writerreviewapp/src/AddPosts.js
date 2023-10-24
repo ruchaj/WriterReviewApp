@@ -10,14 +10,16 @@ import { useUserContext } from './UserContext';
 const AddPost = ({ post }) => {
   const location = useLocation();
   const { user } = useUserContext();
+  const [post_date, setPostDate] = useState(new Date().toISOString().slice(0, -8));
 
+  console.log(serverTimestamp());
   const [formData, setFormData] = useState({
     anonymous: true,
     genre_id: '',
     title: '',
     user_id: user ? user.email : '',
     content: '',
-    post_date: serverTimestamp(),
+    post_date: new Date(post_date),
   });
   const navigate = useNavigate();
 
@@ -41,9 +43,10 @@ const AddPost = ({ post }) => {
           title: formData.title,
           user_id: formData.user_id,
           content: formData.content,
-          post_date: serverTimestamp(),
+          post_date: new Date(post_date),
         });
         console.log('Post updated successfully!');
+        navigate('/posts');
       } else {
         await addDoc(postsCollection, {
           anonymous: formData.anonymous,
@@ -51,8 +54,9 @@ const AddPost = ({ post }) => {
           title: formData.title,
           user_id: formData.user_id,
           content: formData.content,
-          post_date: serverTimestamp(),
+          post_date: new Date(post_date),
         });
+        console.log(serverTimestamp().seconds);
         console.log('Post added successfully!');
       }
 
@@ -62,7 +66,7 @@ const AddPost = ({ post }) => {
         title: '',
         user_id: '',
         content: '',
-        post_date: serverTimestamp(),
+        post_date: new Date().toISOString().slice(0, -8),
       });
 
       navigate('/posts');

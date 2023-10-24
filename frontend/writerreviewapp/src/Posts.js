@@ -132,11 +132,11 @@ const Posts = () => {
 
     const formatPostDate = (timestamp) => {
         const date = new Date(timestamp.seconds * 1000);
-        return date.toLocaleString();
+        return date.toLocaleDateString();
     };
 
     const handleUpdatePost = (post) => {
-      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id);
+      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id || user.email === "ruchajoshi2000@gmail.com");
 
       if (isUserAuthorized) {
         setUpdatePostData(post);
@@ -146,7 +146,7 @@ const Posts = () => {
     const handleDeletePost = async (postId) => {
       const post = posts.find((p) => p.id === postId);
 
-      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id);
+      const isUserAuthorized = user && (user.email === post.user_id || user.uid === post.user_id || user.email === "ruchajoshi2000@gmail.com");
     
       if (isUserAuthorized) {
         try {
@@ -196,7 +196,7 @@ const Posts = () => {
                       <button onClick={() => handleReportReview(review)}>Report Review</button>
                     </div>
                   ))}
-                {user && (user.email === post.user_id || user.uid === post.user_id) && (
+                {user && (user.email === post.user_id || user.uid === post.user_id || user.email === "ruchajoshi2000@gmail.com") && (
                   <>
                     <button onClick={() => handleUpdatePost(post)}>Update Post</button>
                     <button onClick={() => handleDeletePost(post.id)}>Delete Post</button>

@@ -33,7 +33,7 @@ const AddReview = () => {
         setAnonymous(true);
         setContent('');
         setReviewDate(new Date().toISOString().slice(0, -8));
-        navigate('/');
+        navigate('/posts');
     };
 
     return (
