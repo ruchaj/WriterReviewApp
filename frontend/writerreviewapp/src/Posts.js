@@ -77,6 +77,8 @@ const Posts = () => {
     const [reviews, setReviews] = useState({});
     const [updatePostData, setUpdatePostData] = useState(null);
     const { user } = useUserContext();
+    const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState(null);
     const handleReportReview = async (review) => {
       try {
         const postID = review.post_id;
@@ -108,9 +110,23 @@ const Posts = () => {
     useEffect(() => {
         const postsCollection = collection(db, "posts");
         const reviewsCollection = collection(db, "reviews");
+        const fetchGenres = async () => {
+          const genresCollection = collection(db, 'genres');
+          const genresSnapshot = await getDocs(genresCollection);
+          const genreData = genresSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setGenres(genreData);
+        };
+        fetchGenres();
+    
+        let postsQuery = query(postsCollection);
 
-        const postsQuery = query(postsCollection);
-        const reviewsQuery = query(reviewsCollection);
+        if (selectedGenre) {
+          postsQuery = query(postsCollection, where('genre_id', '==', selectedGenre));
+        }
+              const reviewsQuery = query(reviewsCollection);
 
         const unsubscribePosts = onSnapshot(postsQuery, (snapshot) => {
             const newPosts = snapshot.docs.map((doc) => {
@@ -139,7 +155,7 @@ const Posts = () => {
             unsubscribePosts();
             unsubscribeReviews();
         };
-    }, []);
+    }, [selectedGenre]);
 
     const formatPostDate = (timestamp) => {
         const date = new Date(timestamp.seconds * 1000);
@@ -182,8 +198,32 @@ const Posts = () => {
     };
 
     return (
-        <div style={containerStyles} className="container card-container">
+      <div style={containerStyles} className="container card-container">
+        <h2>Filter by Genre</h2>
+        <select
+            onChange={(e) => setSelectedGenre(e.target.value)}
+            value={selectedGenre || ''}
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '0.5rem',
+              margin: '0.5rem 0',
+              fontFamily: 'inherit',
+              fontSize: '1rem',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              backgroundColor: '#fff',
+            }}
+          >
+            <option value="">All Genres</option>
+            {genres.map((genre) => (
+              <option key={genre.id} value={genre.genre_name}>
+                {genre.genre_name}
+              </option>
+            ))}
+      </select>
         {updatePostData && <AddPosts post={updatePostData} />}
+
         {posts.map((post) => (
           <div style={cardStyles} className={`card mb-4 custom-card ${post.isReadMore ? 'expanded' : ''}`} key={post.id}>
             <div className="scroll">
@@ -223,6 +263,4 @@ const Posts = () => {
       </div>
     );
   };
-
-
 export default Posts;
