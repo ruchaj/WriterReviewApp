@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import db from './Firebase';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { addDoc, collection, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
+import { addDoc, getDocs, collection, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -11,6 +11,8 @@ const AddPost = ({ post }) => {
   const location = useLocation();
   const { user } = useUserContext();
   const [post_date, setPostDate] = useState(new Date().toISOString().slice(0, -8));
+  const [genres, setGenres] = useState([]);
+
 
   console.log(serverTimestamp());
   const [formData, setFormData] = useState({
@@ -27,6 +29,16 @@ const AddPost = ({ post }) => {
     if (post) {
       setFormData({ ...post });
     }
+    const fetchGenres = async () => {
+      const genresCollection = collection(db, 'genres'); // Use the 'collection' function to access the 'genres' collection
+      const genresSnapshot = await getDocs(genresCollection); // Use 'getDocs' to fetch the data
+      const genreData = genresSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setGenres(genreData);
+    };
+    fetchGenres();
   }, [post]);
 
   const handleFormSubmit = async (event) => {
@@ -46,7 +58,7 @@ const AddPost = ({ post }) => {
           post_date: new Date(post_date),
         });
         console.log('Post updated successfully!');
-        navigate('/posts');
+        navigate('/');
       } else {
         await addDoc(postsCollection, {
           anonymous: formData.anonymous,
@@ -56,7 +68,6 @@ const AddPost = ({ post }) => {
           content: formData.content,
           post_date: new Date(post_date),
         });
-        console.log(serverTimestamp().seconds);
         console.log('Post added successfully!');
       }
 
@@ -92,18 +103,27 @@ const AddPost = ({ post }) => {
           </label>
         </div>
         <div className="mb-3">
-          <label htmlFor="genre_id" className="form-label">
-            Genre ID:
-            <input
-              type="text"
-              id="genre_id"
-              name="genre_id"
-              className="form-control"
-              value={formData.genre_id}
-              onChange={(e) => setFormData({ ...formData, genre_id: e.target.value })}
-            />
-          </label>
-        </div>
+  <label htmlFor="genre_id" className="form-label">
+    Genre Name: {/* Update label to reflect the change */}
+    <select
+      id="genre_id"
+      name="genre_id"
+      className="form-control"
+      value={formData.genre_id}
+      onChange={(e) => {
+        const selectedGenre = genres.find((genre) => genre.id === e.target.value);
+        setFormData({ ...formData, genre_id: selectedGenre ? selectedGenre.genre_name : '' });
+      }}
+    >
+      <option value="">Select a Genre</option>
+      {genres.map((genre) => (
+        <option key={genre.id} value={genre.id}>
+          {genre.genre_name}
+        </option>
+      ))}
+    </select>
+  </label>
+</div>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
             Title:

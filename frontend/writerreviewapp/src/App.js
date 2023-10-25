@@ -11,6 +11,7 @@ import AddReview from './AddReview';
 import AddAuthor from './AddAuthor';
 import Login from './Login';
 import Chatbot from './Chatbot';
+import AddGenre from './AddGenre';
 
 function App() {
   const { user} = useUserContext();
@@ -20,9 +21,11 @@ function App() {
         <h1>Writer Review</h1>
         <h4>Where you can share your excerpts and leave reviews anonymously!</h4>
         <NavLink to="/add" style={{ marginRight: '20px' }}>Add Post</NavLink>
+        <NavLink to="/posts" style={{ marginRight: '20px' }}>Posts</NavLink>
         <NavLink to="/login" style={{ marginRight: '20px' }}>
           {user ? 'Logout' : 'Login'}
         </NavLink>
+        <NavLink to="/addgenre" style={{ marginRight: '20px' }}>Add Genre</NavLink>
         <NavLink to="/chatbot">Get help from our Chatbot!</NavLink>
         <Routes>
           <Route path="/Chatbot" element={<Chatbot />} />
@@ -32,6 +35,7 @@ function App() {
           <Route path="/add" element={<AddPosts />} />
           <Route path="/review/:postId" element={<AddReview />} />
           <Route path="/signup" element={<AddAuthor />} />
+          <Route path="/addgenre" element={<AddGenre />} />
         </Routes>
 
       </div>
