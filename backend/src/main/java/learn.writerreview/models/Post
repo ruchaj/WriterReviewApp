@@ -6,6 +6,7 @@ public class Post {
     private int postId;
     private int userId;
     private String title;
+    private String genreId;
     private String content;
     private Timestamp postDate;
     private boolean anonymous;
@@ -54,7 +55,12 @@ public class Post {
     public Timestamp getPostDate() {
         return postDate;
     }
-
+    public String getGenreId() {
+        return genreId;
+    }
+    public void setGenreId(String genreId) {
+        this.genreId = genreId;
+    }
     public void setPostDate(Timestamp postDate) {
         this.postDate = postDate;
     }
