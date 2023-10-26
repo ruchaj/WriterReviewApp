@@ -97,7 +97,7 @@ const AddGenre = () => {
       <h2 className="mt-4">Report and Delete a Genre</h2>
       <div className="mb-3">
         <label htmlFor="reportedGenreName" className="form-label">
-          Improoper Genre Name? Report it here:
+          Improper Genre Name? Report it here:
           <input
             type="text"
             id="reportedGenreName"

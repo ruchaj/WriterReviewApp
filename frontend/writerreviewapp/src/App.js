@@ -26,7 +26,7 @@ function App() {
           {user ? 'Logout' : 'Login'}
         </NavLink>
         <NavLink to="/addgenre" style={{ marginRight: '20px' }}>Add Genre</NavLink>
-        <NavLink to="/chatbot">Get help from our Chatbot!</NavLink>
+        <NavLink to="/chatbot">Get help from our Grammar API!</NavLink>
         <Routes>
           <Route path="/Chatbot" element={<Chatbot />} />
           <Route exact path="/" element={<Login />} />

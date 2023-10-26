@@ -58,7 +58,13 @@ const AddReview = () => {
                 <input type="text" value={user ? user.email : ''} disabled /> 
             </label>
             <br />
-            <button type="submit">Submit</button>
+            <button className="btn btn-primary" type="submit">Submit</button>
+            <button
+        className="btn btn-danger"
+        onClick={() => navigate('/posts')}
+      >
+        Cancel
+      </button>
         </form>
     );
 };

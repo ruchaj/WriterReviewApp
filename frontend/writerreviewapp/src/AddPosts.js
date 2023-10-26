@@ -177,6 +177,13 @@ const AddPost = ({ post }) => {
         <button type="submit" className="btn btn-primary">
           {post ? 'Update' : 'Submit'}
         </button>
+        <button
+        className="btn btn-danger"
+        onClick={() => navigate('/posts')}
+      >
+        Cancel
+      </button>
+
       </form>
     </div>
   );
